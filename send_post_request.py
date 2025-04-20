@@ -1,34 +1,9 @@
 import argparse
 import requests
-import base64
 import imageio
-import io
-import numpy as np
 import matplotlib.pyplot as plt
+from webapp.utils import image_from_base64, image_to_base64
 from pathlib import Path
-from typing import Optional
-
-
-class ImageGenerationRequest:
-    prompt: str
-    image: Optional[str] = None
-    n_samples: int = 1
-    low_threshold: int = 50
-    high_threshold: int = 100
-    image_resolution: int = 512
-    seed: int = 1
-    save_memory: bool = True
-    quality: str = "good quality"
-    n_prompt: str = ""
-    strength: float = 1.0
-    scale: float = 9.0
-    eta: float = 0.0
-    ddim_steps: int = 10
-
-
-# r = requests.post("http://localhost:80/generate", json={"width": "100", "height": "200"})
-# print(r.status_code)
-# print(r.json())
 
 
 if __name__ == "__main__":
@@ -58,13 +33,21 @@ if __name__ == "__main__":
     # Encode image in base64
     if args.image is not None:
         img = imageio.imread(Path(args.image).as_posix())
-        buffer = io.BytesIO()
-        np.save(buffer, img, allow_pickle=False)
-        img_data = base64.b64encode(buffer.getvalue())
-        param_data["image"] = img_data.decode("utf-8")
+        param_data["image"] = image_to_base64(img)
 
     # Make a POST request
-    r = requests.post("http://localhost:80/generate", json=param_data)
+    r = requests.post("http://localhost:8000/generate", json=param_data)
+    if r.status_code == 200:
+        # Plot resulting images
+        response = r.json()
+        for img in response["result"]:
+            img = image_from_base64(img)
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            ax.imshow(img)
+            ax.axis('off')
+            plt.show()
 
     # Return error code if not successful
     exit(0 if r.status_code == 200 else 1)
