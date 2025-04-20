@@ -2,6 +2,7 @@ import sys
 import torch
 import random
 import numpy as np
+from image_utils import image_from_base64, image_to_base64
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pytorch_lightning import seed_everything
@@ -9,7 +10,6 @@ from typing import Optional
 sys.path.append("ControlNet")
 from cldm.model import create_model, load_state_dict
 from cldm.ddim_hacked import DDIMSampler
-from utils import image_from_base64, image_to_base64
 
 
 class ImageGenerationRequest(BaseModel):

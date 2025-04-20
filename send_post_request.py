@@ -2,7 +2,7 @@ import argparse
 import requests
 import imageio
 import matplotlib.pyplot as plt
-from webapp.utils import image_from_base64, image_to_base64
+from webapp.image_utils import image_from_base64, image_to_base64
 from pathlib import Path
 
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         param_data["image"] = image_to_base64(img)
 
     # Make a POST request
-    r = requests.post("http://localhost:8000/generate", json=param_data)
+    r = requests.post("http://localhost:80/generate", json=param_data)
     if r.status_code == 200:
         # Plot resulting images
         response = r.json()
