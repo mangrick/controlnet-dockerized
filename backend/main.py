@@ -41,10 +41,6 @@ model.load_state_dict(load_state_dict('./ControlNet/models/control_sd15_canny.pt
 ddim_sampler = DDIMSampler(model)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
 @app.post("/generate/")
 async def generate(config: ImageGenerationRequest):
     """

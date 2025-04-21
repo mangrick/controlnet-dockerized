@@ -10,8 +10,8 @@ SHELL ["/bin/bash", "-c"]
 RUN pip install --no-cache-dir --upgrade pip setuptools
 
 # Set the working directory in the container
-RUN mkdir /webapp
-WORKDIR /webapp
+RUN mkdir /backend
+WORKDIR /backend
 
 # Copy the worker app and ControlNet repo into the container at /home/worker/
 COPY . .
@@ -22,10 +22,10 @@ RUN pip install torch==1.12.1+cpu torchvision==0.13.1+cpu --extra-index-url http
 RUN pip install --no-cache-dir --requirement ./requirements.txt
 
 # Make port 80 available to the world outside this container
-EXPOSE 80
+EXPOSE 5557
 
 # Set environment variables
-ENV PYTHONPATH /webapp
+ENV PYTHONPATH /backend
 
 # Run the application
-CMD ["fastapi", "run", "main.py", "--port", "80"]
+CMD ["fastapi", "run", "main.py", "--port", "5557"]
