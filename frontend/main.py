@@ -6,21 +6,15 @@ from image_utils import image_to_base64, image_from_base64
 
 def send_synthesis_request(prompt, in_image, low_threshold, high_threshold, resolution):
     """
-    Use the input image and the 3 sliders to send a POST request to the backend.
+    Use the prompt, input image, and the 3 sliders to send a POST request to the backend.
     """
     param_data = {"prompt": prompt, "low_threshold": low_threshold, "high_threshold": high_threshold, "resolution": resolution}
 
-    print("Image:", in_image, flush=True)
-    print("Prompt:", prompt, flush=True)
     img = imageio.imread(in_image)
-    print("Image shape", img.shape, flush=True)
     param_data["image"] = image_to_base64(img)  # The temporary file seems to contain 3 channels even though orig only has 1
 
     # Make a POST request
-    print("Sending POST request...", flush=True)
     r = requests.post("http://controlnet-backend-1:5557/generate", json=param_data)
-
-    print("Received result from backend. Status code:", r.status_code, flush=True)
     if r.status_code != 200:
         return None
 
