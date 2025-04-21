@@ -6,13 +6,13 @@ ControlNet running in the backend. This project is mainly built on FastAPI and g
 ## Structure
 The application is structured into a frontend and a backend part, where the frontend application provides a user 
 interface and sends corresponding POST requests to the backend. The backend receives the image generation configuration
-and uses ControlNet to synthesize a new image to return. Note that the repository does not store the network weights
+and uses ControlNet to synthesize a new image in return. Note that the repository does not store the network weights
 for ControlNet, therefore, these need to be obtained from 
 [Huggingface](https://huggingface.co/lllyasviel/ControlNet/blob/main/models/control_sd15_canny.pth) and placed into 
-the *models* folder inside ControlNet directory.
+the *models* folder inside *ControlNet* directory.
 
 Moreover, the backend can also be accessed programmatically to request synthesized images from the command line, e.g. 
-with *curl* or from another Python application. See [demo](send_post_request.py) for an example.
+with *curl* or from another Python application. See [send_post_request](send_post_request.py) for an example.
 
 Screenshot of the Web application:
 ![demo](img/web_ui.png)
